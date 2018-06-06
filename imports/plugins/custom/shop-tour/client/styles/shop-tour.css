@@ -1,0 +1,12 @@
+.introjs-helperNumberLayer {
+  bottom: -16px !important;
+  right: -5px !important;
+  top: unset !important;
+  left: unset !important;
+}
+.tour {
+  border: 0px !important;
+  height: 55px;
+  flex: 0 0 auto;
+  padding: 0px 17.5px;
+}

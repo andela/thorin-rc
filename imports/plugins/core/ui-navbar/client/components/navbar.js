@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
+import shopTour from "../../../../custom/shop-tour/client/shoptour";
 
 // TODO: Delete this, and do it the react way - Mike M.
 async function openSearchModalLegacy(props) {
@@ -26,9 +27,17 @@ class NavBar extends Component {
     searchEnabled: PropTypes.bool,
     shop: PropTypes.object
   }
+  constructor(props) {
+    super(props);
+    this.startTour = this.startTour.bind(this);
+  }
 
   state = {
     navBarVisible: false
+  }
+
+  startTour() {
+    shopTour();
   }
 
   toggleNavbarVisibility = () => {
@@ -47,7 +56,7 @@ class NavBar extends Component {
   renderLanguage() {
     return (
       <div className="languages hidden-xs">
-        <Components.LanguageDropdown />
+        <Components.LanguageDropdown data-step = "2" data-intro="Take a tour"/>
       </div>
     );
   }
@@ -94,6 +103,16 @@ class NavBar extends Component {
     }
   }
 
+  renderTakeTour() {
+    if (this.props.hasProperPermission) {
+      return (
+        <Components.Button className="tour" onClick={this.startTour} >
+          Take Tour
+        </Components.Button>
+      );
+    }
+  }
+
   renderCartContainerAndPanel() {
     return (
       <div className="cart-container">
@@ -132,6 +151,12 @@ class NavBar extends Component {
     );
   }
 
+  renderStaticPages() {
+    return (
+      <Components.StaticPagesComponent />
+    );
+  }
+
   render() {
     return (
       <div className="rui navbar">
@@ -139,8 +164,10 @@ class NavBar extends Component {
         {this.renderBrand()}
         {this.renderTagNav()}
         {this.renderSearchButton()}
+        {this.renderTakeTour()}
         {this.renderNotificationIcon()}
         {this.renderLanguage()}
+        {this.renderStaticPages()}
         {this.renderCurrency()}
         {this.renderMainDropdown()}
         {this.renderCartContainerAndPanel()}

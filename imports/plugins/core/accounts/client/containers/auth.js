@@ -7,6 +7,7 @@ import { Accounts } from "meteor/accounts-base";
 import { Router } from "/client/api";
 import { ServiceConfigHelper, LoginFormSharedHelpers } from "../helpers";
 import { LoginFormValidation } from "/lib/api";
+import  shopTour from "../../../../custom/shop-tour/client/shoptour";
 
 class AuthContainer extends Component {
   static propTypes = {
@@ -93,6 +94,7 @@ class AuthContainer extends Component {
           });
         } else {
           Router.go(this.props.currentRoute.route.path);
+          shopTour();
         }
       });
     }

@@ -30,7 +30,7 @@ class Notification extends Component {
   render() {
     const { notificationList, handleDelete, unread, markOneAsRead, markAllAsRead } = this.props;
     return (
-      <div className="dropdown">
+      <div className="dropdown notify">
         <div className="notification-icon" data-toggle="dropdown">
           {this.renderButton(unread)}
         </div>
