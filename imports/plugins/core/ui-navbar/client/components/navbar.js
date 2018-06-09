@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import shopTour from "../../../../custom/shop-tour/client/shoptour";
+// import wallet from "../../../../../plugins/custom/wallet/client/components/wallet";
 
 // TODO: Delete this, and do it the react way - Mike M.
 async function openSearchModalLegacy(props) {
@@ -81,6 +82,10 @@ class NavBar extends Component {
     );
   }
 
+  wallet() {
+    alert('hi hi')
+  }
+
   renderSearchButton() {
     if (this.props.searchEnabled) {
       return (
@@ -93,7 +98,7 @@ class NavBar extends Component {
         </div>
       );
     }
-  }
+  }ß
 
   renderNotificationIcon() {
     if (this.props.hasProperPermission) {
@@ -108,6 +113,16 @@ class NavBar extends Component {
       return (
         <Components.Button className="tour" onClick={this.startTour} >
           Take Tour
+        </Components.Button>
+      );
+    }
+  }
+
+  renderWallet() {
+    if (this.props.hasProperPermission) {
+      return (
+        <Components.Button className="wallet" onClick={this.wallet} >
+          Wallet
         </Components.Button>
       );
     }
@@ -157,6 +172,7 @@ class NavBar extends Component {
         {this.renderHamburgerButton()}
         {this.renderBrand()}
         {this.renderTagNav()}
+        {this.renderWallet()}
         {this.renderSearchButton()}
         {this.renderTakeTour()}
         {this.renderNotificationIcon()}
