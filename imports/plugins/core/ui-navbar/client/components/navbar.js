@@ -82,10 +82,6 @@ class NavBar extends Component {
     );
   }
 
-  wallet() {
-    alert('hi hi')
-  }
-
   renderSearchButton() {
     if (this.props.searchEnabled) {
       return (
@@ -121,9 +117,7 @@ class NavBar extends Component {
   renderWallet() {
     if (this.props.hasProperPermission) {
       return (
-        <Components.Button className="wallet" onClick={this.wallet} >
-          Wallet
-        </Components.Button>
+        <Components.wallet />
       );
     }
   }
@@ -172,7 +166,6 @@ class NavBar extends Component {
         {this.renderHamburgerButton()}
         {this.renderBrand()}
         {this.renderTagNav()}
-        {this.renderWallet()}
         {this.renderSearchButton()}
         {this.renderTakeTour()}
         {this.renderNotificationIcon()}

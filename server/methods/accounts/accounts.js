@@ -311,6 +311,7 @@ function currentUserHasPassword() {
 
 /**
  * @name accounts/addressBookAdd
+ * @name accounts/deddeddd
  * @memberof Methods/Accounts
  * @method
  * @summary Add new addresses to an account
@@ -1039,3 +1040,4 @@ Meteor.methods({
   "accounts/updateEmailAddress": updateEmailAddress,
   "accounts/removeEmailAddress": removeEmailAddress
 });
+
