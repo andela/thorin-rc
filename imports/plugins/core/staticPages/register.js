@@ -18,7 +18,6 @@ Reaction.registerPackage({
       icon: "fa fa-file",
       priority: 1,
       container: "core",
-      workflow: "coreDashboardWorkflow",
       permissions: [
         {
           label: "dashboard/static",
@@ -26,25 +25,6 @@ Reaction.registerPackage({
         }
       ],
       template: "staticPages"
-    }
-  ],
-  layout: [
-    {
-      layout: "coreLayout",
-      workflow: "coreDashboardWorkflow",
-      collection: "StaticPages",
-      theme: "default",
-      enabled: true,
-      structure: {
-        template: "staticPages",
-        layoutHeader: "layoutHeader",
-        layoutFooter: "layoutFooter",
-        notFound: "notFound",
-        dashboardHeader: "dashboardHeader",
-        dashboardControls: "dashboardControls",
-        dashboardHeaderControls: "dashboardControls",
-        adminControlsFooter: "adminControlsFooter"
-      }
     }
   ]
 });
