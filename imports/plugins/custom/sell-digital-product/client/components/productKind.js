@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import axios from "axios";
 import { Reaction } from "/client/modules/core";
+import { Logger } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 
@@ -60,7 +61,7 @@ class ProductKind extends Component {
     Meteor.call("upsertDigitalProduct", modifier,
       function (err) {
         if (err) {
-          console.log("ERROR ", err); //eslint-disable-line
+          Logger.error("Inserting or updating digital product failed.");
         }
       });
   }
@@ -112,12 +113,12 @@ class ProductKind extends Component {
         Meteor.call("upsertDigitalProduct", modifier,
           function (err) {
             if (err) {
-              console.log("ERROR ", err); //eslint-disable-line
+              Logger.error("Error inserting product");
             }
           });
       })
-      .catch((err) => {
-        console.log("UPLOAD FAILED ", err); //eslint-disable-line
+      .catch((err) => { //eslint-disable-line
+        Logger.error("Upload failed");
         this.setState({
           ...this.state,
           uploadSuccess: false,
