@@ -20,7 +20,7 @@ Meteor.methods({
   },
   "reviews/average"(productName) {
     check(productName, String);
-    const result = Reviews.aggregate([
+    let result = Reviews.aggregate([
       {
         $match: {
           productName
@@ -33,6 +33,9 @@ Meteor.methods({
         }
       }
     ]);
+    if (result === undefined) {
+      result = [0, 0];
+    }
     return result[0].averageRate;
   }
 });

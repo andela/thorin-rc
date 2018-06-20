@@ -1,0 +1,42 @@
+.size {
+    width: 50%;
+}
+
+.but {
+    color:white;
+    text-decoration: none;
+    background-color: #335B81;
+    transition: 0.3s all ease-in;
+    padding: 10px;
+    border: 1px solid #335B81;
+  }
+
+  .but1 {
+    color:white;
+    text-decoration: none;
+    background-color: #335B81;
+    transition: 0.3s all ease-in;
+    padding: 10px;
+    border: 1px solid #335B81;
+    margin-left: 5%;
+  }
+
+  .but2 {
+    color:white;
+    text-decoration: none;
+    background-color: red;
+    transition: 0.3s all ease-in;
+    padding: 10px;
+    border: 1px solid red;
+  }
+
+
+  .scale {
+    width: 50%
+  }
+
+  .left {
+      display: flex
+  }
+
+
