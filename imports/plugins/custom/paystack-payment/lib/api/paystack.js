@@ -18,8 +18,7 @@ export const Paystack = {
     Meteor.call("paystackSubmit", "authorize", cardInfo, paymentInfo, callback);
   },
 
-  verify: (reference, secretKey, callback) => {
-    console.log('reference form verigy', reference);
+  confirm: (reference, secretKey, callback) => {
     const url = `https://api.paystack.co/transaction/verify/${reference}`;
     const headers = new Headers({
       "Authorization": `Bearer ${secretKey}`,

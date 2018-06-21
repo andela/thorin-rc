@@ -23,7 +23,7 @@ function paymentAlert(errorMessage) {
   return $(".alert").removeClass("hidden").text(errorMessage);
 }
 
-function handlePaystackSubmitError(error) {
+function paystackSubmitError(error) {
   const serverError = error !== null ? error.message : void 0;
   if (serverError) {
     return paymentAlert("Oops! " + serverError);
@@ -48,46 +48,45 @@ AutoForm.addHooks("paystack-payment-form", {
       if (paystackPublicAndSecretKeys) {
         const { secretKey, publicKey } = paystackPublicAndSecretKeys;
         Meteor.subscribe("Packages", Reaction.getShopId());
-        const applicationPackages = Packages.findOne({
+        const paymentPackages = Packages.findOne({
           name: "paystack-paymentmethod",
           shopId: Reaction.getShopId()
         });
         const cart = Cart.findOne().getTotal();
         const amount = Math.round(cart * 100);
         const template = this.template;
-        const formData = {
+        const payload = {
           key: publicKey,
           name: val.payerName,
           email: val.payerEmail,
           reference: Random.id(),
           amount,
           callback(response) {
-            const ref = response.reference;
-            if (ref) {
-              Paystack.verify(ref, secretKey, (err, res) => {
+            const reference = response.reference;
+            if (reference) {
+              Paystack.confirm(reference, secretKey, (err, res) => {
                 if (err) {
-                  handlePaystackSubmitError(error);
+                  paystackSubmitError(error);
                   uiEnd(template, "Resubmit payment");
                 } else {
-                  const transaction = res.data;
+                  const transactionDetails = res.data;
                   submitting = false;
                   const paymentMethod = {
                     processor: "Paystack",
-                    paymentPackageId: applicationPackages._id,
-                    paymentSettingsKey: applicationPackages.registry[0].settingsKey,
-                    storedCard: transaction.authorization.card_type,
+                    paymentPackageId: paymentPackages._id,
+                    paymentSettingsKey: paymentPackages.registry[0].settingsKey,
+                    cardType: transactionDetails.authorization.card_type,
                     method: "credit",
-                    transactionId: transaction.reference,
-                    riskLevel: transaction.riskLevel,
-                    currency: transaction.currency,
-                    amount: transaction.amount,
-                    status: transaction.status,
+                    transactionId: transactionDetails.reference,
+                    currency: transactionDetails.currency,
+                    amount: transactionDetails.amount,
+                    status: transactionDetails.status,
                     mode: "authorize",
                     createdAt: new Date(),
                     transactions: []
                   };
                   Alerts.toast("Transaction successful");
-                  paymentMethod.transactions.push(transaction.authorization);
+                  paymentMethod.transactions.push(transactionDetails.authorization);
                   Meteor.call("cart/submitPayment", paymentMethod);
                 }
               });
@@ -98,14 +97,13 @@ AutoForm.addHooks("paystack-payment-form", {
           }
         };
         try {
-          PaystackPop.setup(formData).openIframe();
+          PaystackPop.setup(payload).openIframe();
           submitting = false;
         } catch (err) {
-          handlePaystackSubmitError(err);
+          paystackSubmitError(err);
           uiEnd(template, "Complete payment");
         }
       }
-      // console.log('paystack keys skipped');
     });
     return false;
   },
