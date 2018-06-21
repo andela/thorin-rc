@@ -15,7 +15,7 @@ class LanguageDropDown extends Component {
 
   buttonElement() {
     return (
-      <Components.Button containerStyle={{ color: "#000" }}>
+      <Components.Button containerStyle={{ color: "#fff" }}>
         <i className="fa fa-language fa-lg"/>&nbsp;
         <i className="fa fa-caret-down"/>
       </Components.Button>

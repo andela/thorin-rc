@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import { compose } from "recompose";
@@ -76,7 +77,6 @@ class FeaturedProducts extends Component {
           <h2 className="flash-text">More To Love</h2>
           <div className="product">
             { this.props.moreToLove && this.props.moreToLove.map((product) => this.renderMoreToLove(product)) }
-
           </div>
         </div>
       </div>
@@ -132,11 +132,11 @@ const composer = (props, onData) => {
   }
 };
 
-registerComponent("FeaturedProducts", FeaturedProducts, composeWithTracker(composer));
-
 FeaturedProducts.PropTypes = {
   productsToLove: PropTypes.array,
   moreToLove: PropTypes.array
 };
+
+registerComponent("FeaturedProducts", FeaturedProducts, composeWithTracker(composer));
 
 export default compose(composeWithTracker(composer))(FeaturedProducts);

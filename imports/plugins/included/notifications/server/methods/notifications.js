@@ -36,7 +36,10 @@ Meteor.methods({
       forAdmin: "You have a new order.",
       orderDelivered: "Your order has been delivered.",
       orderProcessing: "Your order is being processed.",
-      orderShipped: "Your order has been shipped."
+      orderShipped: "Your order has been shipped",
+      fund: "Your wallet was just funded",
+      transfer: "Your transfer was successful",
+      payment: "Payment was successful"
     };
 
     if (userId && type && url) {

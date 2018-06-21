@@ -95,6 +95,10 @@ class AuthContainer extends Component {
         } else {
           Router.go(this.props.currentRoute.route.path);
           shopTour();
+          const balance = 0;
+          const userId = Meteor.user()._id;
+          const walletId = Math.floor(Math.random() * 15450906) + 39595950;
+          Meteor.call("wallet/create", userId, balance, walletId);
         }
       });
     }
@@ -212,6 +216,7 @@ function composer(props, onData) {
   onData(null, { currentRoute: Router.current() });
 }
 
-registerComponent("AuthContainer", AuthContainer, composeWithTracker(composer));
+
+registerComponent("AuthContainer",  AuthContainer, composeWithTracker(composer));
 
 export default composeWithTracker(composer)(AuthContainer);

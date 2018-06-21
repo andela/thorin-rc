@@ -55,7 +55,7 @@ class FlashDeals extends Component {
             <div style={{ backgroundImage: "url('/resources/images/blueprint.jpg')" }}>
               <span><a href="/tag/blue-prints"><strong>Blue Prints</strong></a></span>
             </div>
-            <span className="digital-button"><a href="/tags/digital-products"><span>Digital Products <i className="fa fa-chevron-right" />
+            <span className="digital-button"><a href="/tag/digital-products"><span>Digital Products <i className="fa fa-chevron-right" />
             </span></a></span>
           </div>
         </div>

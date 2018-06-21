@@ -11,7 +11,7 @@ const footerItems = [
   { imageUrl: "resources/images/value.png",
     title: "Great Value",
     content: " We offer competitive prices on all products.",
-    extraContent: "We got you covered with our awesome deals.",
+    images: ["resources/images/quality.jpg", "resources/images/certified.jpg", "resources/images/quality-icon.png"],
     className: "col-xs-4 col-md-3 col-lg-2"
   },
   { imageUrl: "resources/images/delivery.png", title: "Worldwide Delivery",
@@ -26,7 +26,7 @@ const footerItems = [
 ];
 
 class PageFooter extends Component {
-  footerItem = ({ imageUrl, title, content, extraContent, className, images }) => (
+  footerItem = ({ imageUrl, title, content, className, images }) => (
     <div className={`${className} footer-item `} key={title}>
       <img src={imageUrl} className="footer-icon"/>
       <strong><h3>{title}</h3></strong>
@@ -36,11 +36,6 @@ class PageFooter extends Component {
         <img src={images[0]} className="footer-logo"/>
         <img src={images[1]} className="footer-logo"/>
         <img src={images[2]} className="footer-logo"/>
-      </div>
-      }
-      { extraContent &&
-      <div className="logos">
-        <p>{extraContent}</p>
       </div>
       }
     </div>
