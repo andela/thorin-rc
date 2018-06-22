@@ -73,15 +73,15 @@ AutoForm.addHooks("paystack-payment-form", {
                   submitting = false;
                   const paymentMethod = {
                     processor: "Paystack",
+                    mode: "authorize",
                     paymentPackageId: paymentPackages._id,
                     paymentSettingsKey: paymentPackages.registry[0].settingsKey,
                     cardType: transactionDetails.authorization.card_type,
                     method: "credit",
-                    transactionId: transactionDetails.reference,
                     currency: transactionDetails.currency,
                     amount: transactionDetails.amount,
+                    transactionId: transactionDetails.reference,
                     status: transactionDetails.status,
-                    mode: "authorize",
                     createdAt: new Date(),
                     transactions: []
                   };
