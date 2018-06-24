@@ -41,6 +41,7 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
         <p><strong>Order ID </strong>{orderId}</p>
         {/* show a different message depending on whether we have an email or not */}
         <AddEmail order={order} orderEmail={order.email} />
+        <h4>If you don't cancel your order within 24hrs, logistics expense would be deducted from the amount you paid</h4>
         {/* This is the left side / main content*/}
       </div>
     );
@@ -56,14 +57,18 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
         {shops.map(function (shop) {
           const shopKey = Object.keys(shop);
           return (
-            <CompletedShopOrders
-              shopName={shop[shopKey].name}
-              items={shop[shopKey].items}
-              key={shopKey}
-              shippingMethod={shop[shopKey].shippingMethod}
-              handleDisplayMedia={handleDisplayMedia}
-              isProfilePage={isProfilePage}
-            />
+            <div>
+              <CompletedShopOrders
+                shopName={shop[shopKey].name}
+                items={shop[shopKey].items}
+                key={shopKey}
+                shippingMethod={shop[shopKey].shippingMethod}
+                handleDisplayMedia={handleDisplayMedia}
+                isProfilePage={isProfilePage}
+              />
+              <Components.CancelOrderComponent
+                order={order} />
+            </div>
           );
         })}
       </div>

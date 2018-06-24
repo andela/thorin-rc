@@ -153,6 +153,13 @@ export function orderQuantityAdjust(orderId, refundedItem) {
 }
 
 export const methods = {
+
+  deleteOrder(_id) {
+    check(_id, String);
+    const cancelOrder = Orders.remove(_id);
+    return cancelOrder;
+  },
+
   /**
    * @name orders/shipmentPicked
    * @method

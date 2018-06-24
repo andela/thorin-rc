@@ -48,6 +48,7 @@ class WalletCheckout extends Component {
       Alerts.alert({
         title: `₦${this.state.price} will be deducted from your wallet`,
         type: "warning",
+        html: "<h2>Order cannot be canceled for digital products</h2>",
         showCancelButton: true,
         confirmButtonText: "Confirm"
       }, (remove) => {

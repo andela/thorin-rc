@@ -31,7 +31,7 @@ Meteor.methods({
 
     const values = {};
     const types = {
-      orderCanceled: "Your order was canceled.",
+      orderCanceled: "You canceled your order",
       newOrder: "Your order was accepted",
       forAdmin: "You have a new order.",
       orderDelivered: "Your order has been delivered.",
@@ -39,7 +39,8 @@ Meteor.methods({
       orderShipped: "Your order has been shipped",
       fund: "Your wallet was just funded",
       transfer: "Your transfer was successful",
-      payment: "Payment was successful"
+      payment: "Payment was successful",
+      refund: "Your wallet have been refunded"
     };
 
     if (userId && type && url) {
