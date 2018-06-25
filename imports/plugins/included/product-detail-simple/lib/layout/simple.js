@@ -151,6 +151,14 @@ export default function blocks() {
           }
         },
         {
+          component: "ProductKind",
+          props: {
+            style: {
+              paddingTop: 0
+            }
+          }
+        },
+        {
           component: "ProductField",
           props: {
             fieldName: "description",
@@ -180,7 +188,6 @@ export default function blocks() {
             placement: "productDetail"
           }
         },
-
         // Add to cart button
         {
           component: "AddToCartButton",
@@ -199,7 +206,6 @@ export default function blocks() {
             }
           }
         }
-
       ]
     }
   ];
