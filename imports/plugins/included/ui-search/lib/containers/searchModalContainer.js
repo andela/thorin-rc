@@ -20,7 +20,16 @@ const wrapComponent = (Comp) => (
         collection: "products",
         value: localStorage.getItem("searchValue") || "",
         renderChild: true,
-        facets: []
+        facets: [],
+        minPrice: 0,
+        maxPrice: 10000000,
+        createdAt: "",
+        vendor: "",
+        isVendor: false,
+        sortBy: {},
+        sortValue: "",
+        vendors: [],
+        rate: 5
       };
     }
 
@@ -40,10 +49,71 @@ const wrapComponent = (Comp) => (
       }
     }
 
+    handleSelectPrice = event => {
+      const priceRange = event.target.value;
+      const splitPriceRange = priceRange.split(" - ");
+      localStorage.setItem("isFiltered", true);
+      this.setState({
+        minPrice: parseInt(splitPriceRange[0], 10),
+        maxPrice: parseInt(splitPriceRange[1], 10)
+      });
+    }
+
+    handleSelectVendor = (event) => {
+      localStorage.setItem("isFiltered", true);
+      const vendor = event.target.value;
+      if (vendor !== "vendor") {
+        this.setState({
+          vendor,
+          isVendor: true
+        });
+      } else {
+        this.setState({
+          vendor,
+          isVendor: false
+        });
+      }
+    }
+
+    handleSelectRating = (event) => {
+      this.setState({
+        rate: parseInt(event.target.value, 10)
+      });
+    }
+
+    handleSelectSort = (event) => {
+      const value = event.target.value;
+      switch (value) {
+        case "Lowest-Price":
+          this.setState({ sortBy: { "price.min": 1  } });
+          break;
+        case "Highest-Price":
+          this.setState({ sortBy: { "price.max": -1 } });
+          break;
+        case "New-Arrival":
+          this.setState({ sortBy: { createdAt: -1 } });
+          break;
+        case "Highest Ratings":
+          this.setState({ sortBy: { avgRating: -1 } });
+          break;
+        case "Lowest Ratings":
+          this.setState({ sorBy: { avgRating: 1 } });
+          break;
+        default:
+          this.setState({ sortBy: {} });
+          break;
+      }
+    }
+
     handleChange = (event, value) => {
       localStorage.setItem("searchValue", value);
 
-      this.setState({ value });
+      this.setState({
+        value,
+        minPrice: 0,
+        maxPrice: 10000000,
+        vendor: ""
+      });
     }
 
     handleClick = () => {
@@ -89,6 +159,16 @@ const wrapComponent = (Comp) => (
                 unmountMe={this.handleChildUnmount}
                 searchCollection={this.state.collection}
                 facets={this.state.facets}
+                handleSelectPrice={this.handleSelectPrice}
+                handleSelectVendor={this.handleSelectVendor}
+                handleSelectSort={this.handleSelectSort}
+                handleSelectRating={this.handleSelectRating}
+                minPrice={this.state.minPrice}
+                maxPrice={this.state.maxPrice}
+                vendor={this.state.vendor}
+                isVendor={this.state.isVendor}
+                sortBy={this.state.sortBy}
+                rate={this.state.rate}
               />
             </div> : null
           }

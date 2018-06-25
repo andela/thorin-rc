@@ -22,8 +22,10 @@ class ProductReview extends Component {
 
     avarageRating = () => {
       const productName = Reaction.Router.getParam("handle");
-      Meteor.call("reviews/average", productName, (err, payload) =>
-        this.setState({ averageRateing: payload }));
+      Meteor.call("reviews/average", productName, (err, payload) => {
+        this.setState({ averageRateing: payload });
+        Meteor.call("update/productSearchWithRating", productName, payload);
+      });
     };
 
     ratingChanged = (e) => {
