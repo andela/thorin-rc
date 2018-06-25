@@ -31,6 +31,7 @@ class NavBar extends Component {
   constructor(props) {
     super(props);
     this.startTour = this.startTour.bind(this);
+    this.renderCategories = this.renderCategories.bind(this);
   }
 
   state = {
@@ -147,6 +148,16 @@ class NavBar extends Component {
     );
   }
 
+  renderCategories() {
+    return (
+      <div className="accounts categories-nav">
+        <span className="dropdown-toggle" data-toggle="collapse" data-target="#categories">
+          Categories&nbsp;<i className="fa fa-caret-down" />
+        </span>
+      </div>
+    );
+  }
+
   renderTagNav() {
     return (
       <div className="menu">
@@ -171,6 +182,7 @@ class NavBar extends Component {
       <div className="rui navbar">
         {this.renderHamburgerButton()}
         {this.renderBrand()}
+        {this.renderCategories()}
         {this.renderTagNav()}
         {this.renderSearchButton()}
         {this.renderTakeTour()}
