@@ -1,21 +1,57 @@
 .rui.navbar {
-  background-color: #F8C291;
+  background-color: #DA317D;
 }
 
-.rui.toolbar.navbar-inverse{
+.rui.navbar, .rui.navbar a,.rui.toolbar .rui.toolbar-group.left > button,
+.rui.toolbar .rui.toolbar-group.right > button,
+.rui.toolbar .rui.toolbar-group.left > i
+{
+  color: white;
+}
+
+.rui.navbar a:hover {
+  color: #335B72;
+}
+
+.rui.toolbar.navbar-inverse,{
   background-color: #0a3d62;
   color: white;
 }
 
+.accounts-dialog.accounts-layout.dropdown-menu {
+  color: #333;
+}
+
 .cart-icon{
+  background-color: #f2f2f2;
+  color: #DA317D; 
+}
+
+.rui.navbar .rui.btn-default.flat {
+  color: white;
+  font-weight: 400;
+}
+
+.rui.tagnav .navbar-item > .rui.tag.link:hover,
+.accounts-dropdown:hover, .accounts:hover,
+.rui.navbar .categories-nav:hover,
+.rui.navbar .tour:hover,.rui.navbar .notify .notification-icon:hover,
+.rui.navbar .search:hover, .rui.navbar .currencies:hover,
+.rui.navbar .languages:hover, .rui.navbar .accounts:hover,
+ {
   background-color: #335B72;
+  color: white;
 }
 
 .rui.toolbar-group.left > button,
 .rui.toolbar-group.right > button,
 .rui.toolbar-group.left > i,
 {
-  color: white;
+  color: #333;
+}
+
+.rui.navbar .categories-nav {
+  margin-left: 5px;
 }
 
 .rui.btn.btn-success.outline{
@@ -31,6 +67,44 @@
 /* use this class to have off-white background in containers */
 .off-white{
   background-color: #f2f2f2;
+}
+
+.transparent {
+  background: transparent;
+}
+
+.staticPageDiv {
+  padding: 30px;
+  background: #f2f2f2;
+  margin-top: 30px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  width: 75%;
+}
+
+.btn-color {
+  background-color:#335B72;
+  border-color:#335B72;
+  color: #FFFFFF;
+  transition: 0.3s all ease-in;
+}
+
+.btn-color:hover {
+  background-color:#FFFFFF;
+  border-color:#335B72;
+  color: #335B72;
+}
+
+.custom-dropdown {
+  background: #f2f2f2;
+}
+
+.page-menu:hover {
+  background: #335B72;
+}
+.custom-dropdown > li:focus, .custom-dropdown > li:hover {
+  background: #335B72;
+  color: #FFFFFF !important;
 }
 
 .accounts-dialog.accounts-layout.dropdown-menu.pull-right, 
@@ -72,6 +146,6 @@
 *  
 * If your are using a <ul> tags containing <li> and a <a> inside it
 *    => place ".rui.menu.dropdown-menu" class in the <ul>
-*    e.g <ul class=".rui.menu.dropdown-menu">...</ul>
+*    e.g <ul class="rui menu dropdown-menu">...</ul>
 *
 */

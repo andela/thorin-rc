@@ -20,7 +20,7 @@
         "path": "./reports/"
       },
       "desiredCapabilities": {
-        "args": ["window-size=3000,3000"],
+        "args": ["window-size=5000,5000"],
         "browserName": "chrome",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
