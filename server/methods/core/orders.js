@@ -160,6 +160,12 @@ export const methods = {
     return cancelOrder;
   },
 
+  deleteOrderItem(_id, index) {
+    check(_id, String);
+    check(index, Number);
+    const item = Orders.findOne(_id);
+    console.log(item)
+  },
   /**
    * @name orders/shipmentPicked
    * @method

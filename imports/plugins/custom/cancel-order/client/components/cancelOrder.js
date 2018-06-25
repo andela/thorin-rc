@@ -11,32 +11,78 @@ class CancelOrderComponent extends Component {
     return timeExpended;
   }
 
-  confirmAction = () => {
-    const deduction = this.deduction();   
-    Alerts.alert({
-      title: "Cancel Order",
-      type: "info",
-      html:
-        "Are you sure you want to cancel this order" +
-        `<h2>#${deduction}</h2> will be deducted from the amount you paid!`,
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-      reverseButtons: true
-    }).then(() => {
-      this.cancelOrder();
+  isDigital = (id) => {
+    Meteor.call("findDigitalProduct", id, (err, data) => {
+      return data;
     });
+  }
+  confirmAction = () => {
+    let digitalItems;
+    let itemLength = 0;
+
+    const { _id, items } = this.props.order;
+    const item = this.props.order.items.map((product) => {
+      const { variants: { price } } = product;
+      const it = Meteor.call("findDigitalProduct", product.productId);
+      console.log(it);
+
+      // if ((this.isDigital(product.productId) !== '')) {
+      //   console.log(this.isDigital(product.productId));
+      //   itemLength += 1;
+      //   digitalItems += price;
+      //   console.log(itemLength, digitalItems)
+      // }
+    });
+
+
+    //   const { product: { isDigital }, variants: { price } } = product;
+    //   if (isDigital) {
+    //     digitalItems += price;
+    //     itemLength += 1;
+    //     console.log('@@@@@@@@@@@@@@@@@')
+    //     return digitalItems;
+    //   }
+    //   return digitalItems;
+    // });
+    if (itemLength === items.length) {
+      Alerts.toast("Digital products order cannot be cancelled", "error");
+    } else {
+      const deduction = this.deduction(digitalItems);
+      Alerts.alert({
+        title: "Cancel Order",
+        type: "info",
+        html:
+          "Are you sure you want to cancel this order" +
+          `<h2>#${deduction}</h2> will be deducted from the amount you paid!`,
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        reverseButtons: true
+      }).then(() => {
+        this.cancelOrder();
+      });
+    }
   }
 
   cancelOrder = () => {
-    const { _id } = this.props.order;
-    Meteor.call("deleteOrder", _id);
-    this.refundPayment();
+    let digitalItems = 0;
+    const { _id, items } = this.props.order;
+    const item = items.map((product, index) => {
+      const { variants: { price } } = product;
+      if (this.isDigital(product.productId)) {
+        digitalItems += price;
+        return digitalItems;
+      }
+      Meteor.call("deleteOrderItem", _id, index, (err) => {
+        if (err) alert('@@@@@@@@@@@@@@@')
+      });
+    });
+    // this.refundPayment(digitalItems);
   }
 
-  deduction = () => {
+  deduction = (data) => {
     const { shipping } = this.props.order.billing[0].invoice;
-    let deduct = 0;
+    let deduct = 0 + data;
     const difference = this.difference();
     if (difference > 86400) deduct = shipping;
     return deduct;
@@ -59,10 +105,10 @@ class CancelOrderComponent extends Component {
     });
   }
 
-  refundPayment = () => {
+  refundPayment = (nonRefund) => {
     Meteor.call("wallet/get", Meteor.user()._id, (err, payload) => {
       const { subtotal } = this.props.order.billing[0].invoice;
-      const deductedAmount = this.deduction();
+      const deductedAmount = this.deduction(nonRefund);
       const amountPaid = Number(subtotal);
       const amount  = amountPaid - deductedAmount + payload.balance;
       Meteor.call("wallet/updateAmount", payload._id, amount, (error, res) => {
