@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
+import Categories from "../../../../../imports/plugins/custom/landing-page/client/components/categories";
 import { Reaction } from "/client/api";
 import { getTagIds as getIds } from "/lib/selectors/tags";
 
@@ -45,12 +46,27 @@ class Products extends Component {
   }
 
   /**
+   * Render Product Categories
+   * @return {Node} React node containing the `Categories` component
+   */
+  renderCategories() {
+    return (
+      <div className="collapse categories" id="categories">
+        <Categories />
+      </div>
+    );
+  }
+
+  /**
    * Render product grid
    * @access protected
    * @return {Node} React node containing the `ProductGrid` component.
    */
   renderProductGrid() {
     const products = this.props.products;
+
+    let tag = Reaction.Router.getParam("slug");
+    tag = tag === "e-books" ? tag : tag.replace(/-/g, " ");
 
     const productsByKey = {};
 
@@ -61,12 +77,17 @@ class Products extends Component {
     }
 
     return (
-      <Components.ProductGrid
-        productsByKey={productsByKey || {}}
-        productIds={getIds({ tags: products })}
-        canEdit={Reaction.hasPermission("createProduct")}
-        products={products}
-      />
+      <div>
+        <div className="container tag">
+          <Components.Divider label={tag} />
+        </div>
+        <Components.ProductGrid
+          productsByKey={productsByKey || {}}
+          productIds={getIds({ tags: products })}
+          canEdit={Reaction.hasPermission("createProduct")}
+          products={products}
+        />
+      </div>
     );
   }
 
@@ -126,12 +147,18 @@ class Products extends Component {
   render() {
     // Force show the not-found view.
     if (this.props.showNotFound) {
-      return this.renderNotFound();
+      return (
+        <div>
+          {this.renderCategories()}
+          {this.renderNotFound()}
+        </div>
+      );
     } else if (this.props.ready()) {
       // Render products grid if products are available after subscription ready.
       if (this.hasProducts) {
         return (
           <div id="container-main">
+            {this.renderCategories()}
             {this.renderProductGrid()}
             {this.renderLoadMoreProductsButton()}
             {this.renderSpinner()}
