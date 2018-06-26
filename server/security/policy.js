@@ -52,3 +52,6 @@ BrowserPolicy.content.allowOriginForAll("fonts.gstatic.com");
 
 BrowserPolicy.content.allowOriginForAll("enginex.kadira.io");
 BrowserPolicy.content.allowOriginForAll("*.stripe.com");
+
+BrowserPolicy.content.allowOriginForAll("https://platform.twitter.com/");
+BrowserPolicy.content.allowOriginForAll("*.twimg.com");
