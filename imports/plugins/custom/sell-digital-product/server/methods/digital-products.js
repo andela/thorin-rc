@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { Cart } from "/lib/collections";
+import { Orders } from "/lib/collections";
 import { Accounts } from "/lib/collections";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Logger, Reaction } from "/server/api";
@@ -33,13 +33,18 @@ Meteor.methods({
     }
   },
 
-  "mailDigitalProducts"() {
-    const cart = Cart.find().fetch()[0];
-    const cartItems = cart.items;
+  "mailDigitalProducts"(cartId) {
+    check(cartId, String);
+
+    const currentOrder = Orders.findOne({
+      cartId: cartId
+    });
+
+    const orderItems = currentOrder.items;
     const user = Accounts.findOne(Meteor.userId());
     const email = user.emails[0].address;
 
-    cartItems.forEach((item) => {
+    orderItems.forEach((item) => {
       const product = DigitalProducts.findOne({
         productId: item.productId, isDigital: true
       });

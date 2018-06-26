@@ -40,6 +40,10 @@ class WalletCheckout extends Component {
     }
 
     processPayment = () => {
+      const currentCart = Cart.findOne({
+        userId: Meteor.userId()
+      });
+      window.cartId =  currentCart._id;
       const currency = Shops.findOne().currency;
       const packageData = Packages.findOne({
         name: "wallet",
@@ -82,7 +86,7 @@ class WalletCheckout extends Component {
       const newBlanace = Number(this.state.balance) - this.state.price;
       Meteor.call("wallet/updateAmount", this.state.id, Math.floor(newBlanace.toFixed(2)), (err, payload) => {
         if (payload === true) {
-          Meteor.call("mailDigitalProducts");
+          Meteor.call("mailDigitalProducts", window.cartId);
           this.setState({ balance: newBlanace });
           const NotifcationId = Meteor.user()._id;
           const type = "payment";

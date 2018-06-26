@@ -140,11 +140,12 @@ class ProductKind extends Component {
           fileUrl: response.data.secure_url,
           bytes: response.data.bytes
         };
-        Meteor.call("products/updateProductField", this.props.product._id, "isDigital", modifier.isDigital, error => {
-          if (error) {
-            Alerts.toast(error.message, "error");
-          }
-        });
+        Meteor.call("products/updateProductField",
+          this.props.product._id, "isDigital", modifier.isDigital, error => {
+            if (error) {
+              Alerts.toast(error.message, "error");
+            }
+          });
         Meteor.call("upsertDigitalProduct", modifier, function (err) {
           if (err) {
             Logger.error("Error inserting product");
