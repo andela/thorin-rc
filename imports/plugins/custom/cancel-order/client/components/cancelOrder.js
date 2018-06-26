@@ -5,7 +5,7 @@ import "../style/style.css";
 
 class CancelOrderComponent extends Component {
   difference = () => {
-    const timeExpended = Math.abs(new Date() - this.props.order.createdAt) / 1000;
+    const timeExpended = Math.abs(new Date() - this.props.order.createdAt) / 1000; //eslint-disable-line
     return timeExpended;
   }
 
@@ -28,7 +28,9 @@ class CancelOrderComponent extends Component {
     const { shipping } = this.props.order.billing[0].invoice;
     const { items } = this.props.order;
     this.props.order.items.map((product) => {
-      const { product: { isDigital }, variants: { price }, quantity } = product;
+      const {
+        product: { isDigital }, variants: { price }, quantity
+      } = product;
       if (isDigital) {
         digitalItems += price * quantity;
         itemLength += 1;
@@ -62,7 +64,7 @@ class CancelOrderComponent extends Component {
         type: "info",
         html:
           "Are you sure you want to cancel this order" +
-          `<div class="text-center"> ${deductionTable} </div> <h2>NGN${digitalItems + Number(shipping)}</h2> will be deducted from the amount you paid!`,
+          `<div class="text-center"> ${deductionTable} </div> <h2>NGN${digitalItems + Number(shipping)}</h2> will be deducted from the amount you paid!`, //eslint-disable-line
         showCancelButton: true,
         confirmButtonText: "Yes",
         cancelButtonText: "No",
@@ -78,7 +80,9 @@ class CancelOrderComponent extends Component {
     let isDigitalProduct = false;
     const { _id, items } = this.props.order;
     items.map((product) => {
-      const { product: { isDigital }, variants: { price }, quantity } = product;
+      const {
+        product: { isDigital }, variants: { price }, quantity
+      } = product;
       if (isDigital) {
         digitalItems += price * quantity;
         isDigitalProduct = isDigital;
@@ -121,7 +125,7 @@ class CancelOrderComponent extends Component {
         if (res) {
           this.notify("orderCanceled");
           this.updateTransactionDetails(payload.walletId, amountPaid - deductedAmount);
-          Alerts.toast("The order is cancelled and your wallet have been refunded", "success");
+          Alerts.toast("The order is cancelled and your wallet have been refunded", "success"); //eslint-disable-line
         } else {
           Alerts.toast("Something went wrong", "error");
         }

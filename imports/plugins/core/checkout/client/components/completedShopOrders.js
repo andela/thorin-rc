@@ -35,7 +35,8 @@ const CompletedShopOrders = ({ shopName, items, handleDisplayMedia, shippingMeth
           return <CompletedOrderItem item={item} key={item._id} handleDisplayMedia={handleDisplayMedia} />;
         })}
         <Components.CancelOrderComponent
-          order={order} />
+          order={order}
+        />
       </div>
 
       {/* This is the left side / main content */}
