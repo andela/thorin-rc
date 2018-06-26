@@ -141,7 +141,7 @@ class ProductKind extends Component {
           bytes: response.data.bytes
         };
         Meteor.call("products/updateProductField",
-          this.props.product._id, "isDigital", modifier.isDigital, error => {
+          this.props.product._id, "isDigital", modifier.isDigital, error => { //eslint-disable-line
             if (error) {
               Alerts.toast(error.message, "error");
             }
