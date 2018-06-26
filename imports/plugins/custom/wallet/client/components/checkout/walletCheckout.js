@@ -71,7 +71,7 @@ class WalletCheckout extends Component {
           const walletId = this.state.walletId;
           const amount = this.state.price;
           Meteor.call("transaction/create", userId, Math.floor(amount.toFixed(2)), walletId, transactionType);
-          Alerts.toast("Payment Suucesful", "success");
+          Alerts.toast("Payment Succesful", "success");
           this.walletToWallet();
         }
       });

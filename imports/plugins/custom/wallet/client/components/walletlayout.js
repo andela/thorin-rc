@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import { Template } from "meteor/templating";
 import "./walletlayout.html";
 import "./../style/style.css";
+import "./paystackFundWallet";
+import { paystackFundWallet } from "./paystackFundWallet";
 
 class WalletDashboard extends Component {
   state = {
@@ -13,7 +15,8 @@ class WalletDashboard extends Component {
     balance: "",
     id: "",
     transferWalletId: "",
-    transactionDisplay: []
+    transactionDisplay: [],
+    disable: false
   };
 
   componentDidMount() {
@@ -52,21 +55,30 @@ class WalletDashboard extends Component {
     } else if (this.state.amount < 100) {
       Alerts.toast("That is not a vaild amount", "error");
     } else {
+      this.setState({
+        disable: true
+      });
       const total = Number(this.state.amount) + this.state.balance;
       const balance = Math.floor(total.toFixed(2));
-      Meteor.call("wallet/updateAmount", this.state.id, balance);
-      const transactionType = "Fund Wallet";
-      const userId = Meteor.user()._id;
-      const walletId = this.state.walletId;
-      this.transaction(userId, parseInt(this.state.amount, 10), walletId, transactionType);
-      this.setState({
-        balance: balance,
-        amount: ""
-      });
-      Alerts.toast("Wallet Funded", "success");
-      const NotifcationId = Meteor.user()._id;
-      const type = "fund";
-      this.notifcation(NotifcationId, type);
+      paystackFundWallet(Number(this.state.amount) * 100)
+        .then(() => {
+          Meteor.call("wallet/updateAmount", this.state.id, balance);
+          const transactionType = "Fund Wallet";
+          const userId = Meteor.user()._id;
+          const walletId = this.state.walletId;
+          this.transaction(userId, parseInt(this.state.amount, 10), walletId, transactionType);
+          this.setState({
+            balance: balance,
+            amount: ""
+          });
+          Alerts.toast("Wallet Funded", "success");
+          const NotifcationId = Meteor.user()._id;
+          const type = "fund";
+          this.notifcation(NotifcationId, type);
+          this.setState({
+            disable: false
+          });
+        });
     }
   }
 
@@ -175,6 +187,7 @@ class WalletDashboard extends Component {
                 <button
                   type="submit"
                   className="but"
+                  disabled={this.state.disable}
                 >
               Submit
                 </button>
@@ -205,7 +218,7 @@ class WalletDashboard extends Component {
                     onChange={this.onChange}
                   />
                 </div>
-                <h6>Note you can't refund the back once you transfer the money</h6>
+                <h6>Note, you can't refund the money back once you transfer it</h6>
                 <button
                   type="submit"
                   className="but"
