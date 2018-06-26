@@ -65,9 +65,8 @@ const CompletedOrder = ({ order, orderId, shops, orderSummary, paymentMethods, h
                 shippingMethod={shop[shopKey].shippingMethod}
                 handleDisplayMedia={handleDisplayMedia}
                 isProfilePage={isProfilePage}
+                order={order}
               />
-              <Components.CancelOrderComponent
-                order={order} />
             </div>
           );
         })}

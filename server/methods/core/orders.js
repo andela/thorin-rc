@@ -160,11 +160,20 @@ export const methods = {
     return cancelOrder;
   },
 
-  deleteOrderItem(_id, index) {
+  deleteOrderItem(_id, productId) {
     check(_id, String);
-    check(index, Number);
-    const item = Orders.findOne(_id);
-    console.log(item)
+    check(productId, String);
+    Orders.update({
+      _id: _id
+    }, {
+      $pull: {
+        items: {
+          _id: productId
+        }
+      }
+    },
+    { getAutoValues: false }
+    );
   },
   /**
    * @name orders/shipmentPicked

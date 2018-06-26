@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-
-
 import "../style/style.css";
 
 class CancelOrderComponent extends Component {
@@ -11,49 +9,60 @@ class CancelOrderComponent extends Component {
     return timeExpended;
   }
 
-  isDigital = (id) => {
-    Meteor.call("findDigitalProduct", id, (err, data) => {
-      return data;
-    });
+  deduction = (digitalProductCost) => {
+    const { shipping } = this.props.order.billing[0].invoice;
+    let deduct;
+    if (digitalProductCost) {
+      deduct = 0 + digitalProductCost;
+    } else {
+      deduct = 0;
+    }
+    const difference = this.difference();
+    if (difference > 100) deduct = deduct + Number(shipping);
+    return deduct;
   }
+
   confirmAction = () => {
-    let digitalItems;
+    let digitalItems = 0;
     let itemLength = 0;
-
-    const { _id, items } = this.props.order;
-    const item = this.props.order.items.map((product) => {
-      const { variants: { price } } = product;
-      const it = Meteor.call("findDigitalProduct", product.productId);
-      console.log(it);
-
-      // if ((this.isDigital(product.productId) !== '')) {
-      //   console.log(this.isDigital(product.productId));
-      //   itemLength += 1;
-      //   digitalItems += price;
-      //   console.log(itemLength, digitalItems)
-      // }
+    const { shipping } = this.props.order.billing[0].invoice;
+    const { items } = this.props.order;
+    this.props.order.items.map((product) => {
+      const { product: { isDigital }, variants: { price }, quantity } = product;
+      if (isDigital) {
+        digitalItems += price * quantity;
+        itemLength += 1;
+        return digitalItems;
+      }
+      return digitalItems;
     });
-
-
-    //   const { product: { isDigital }, variants: { price } } = product;
-    //   if (isDigital) {
-    //     digitalItems += price;
-    //     itemLength += 1;
-    //     console.log('@@@@@@@@@@@@@@@@@')
-    //     return digitalItems;
-    //   }
-    //   return digitalItems;
-    // });
+    const deductionTable = `<table class="deduction-table"><tbody>
+      <tr>
+        <td>Expenses</td>
+        <td>Cost</td>
+      </tr>
+      <tr>
+        <td>Digital Product</td>
+        <td>${digitalItems}</td>
+      </tr>
+      <tr>
+        <td>Shipping</td>
+        <td>${shipping}</td>
+      </tr>
+      <tr>
+        <td>Total</td>
+        <td>${digitalItems + Number(shipping)}</td>
+      </tr>
+    </tbody></table>`;
     if (itemLength === items.length) {
       Alerts.toast("Digital products order cannot be cancelled", "error");
     } else {
-      const deduction = this.deduction(digitalItems);
       Alerts.alert({
         title: "Cancel Order",
         type: "info",
         html:
           "Are you sure you want to cancel this order" +
-          `<h2>#${deduction}</h2> will be deducted from the amount you paid!`,
+          `<div class="text-center"> ${deductionTable} </div> <h2>NGN${digitalItems + Number(shipping)}</h2> will be deducted from the amount you paid!`,
         showCancelButton: true,
         confirmButtonText: "Yes",
         cancelButtonText: "No",
@@ -66,41 +75,38 @@ class CancelOrderComponent extends Component {
 
   cancelOrder = () => {
     let digitalItems = 0;
+    let isDigitalProduct = false;
     const { _id, items } = this.props.order;
-    const item = items.map((product, index) => {
-      const { variants: { price } } = product;
-      if (this.isDigital(product.productId)) {
-        digitalItems += price;
+    items.map((product) => {
+      const { product: { isDigital }, variants: { price }, quantity } = product;
+      if (isDigital) {
+        digitalItems += price * quantity;
+        isDigitalProduct = isDigital;
         return digitalItems;
       }
-      Meteor.call("deleteOrderItem", _id, index, (err) => {
-        if (err) alert('@@@@@@@@@@@@@@@')
+      Meteor.call("deleteOrderItem", _id, product._id, (err) => {
+        if (err) Alerts.alert("Something went wrong");
       });
     });
-    // this.refundPayment(digitalItems);
-  }
-
-  deduction = (data) => {
-    const { shipping } = this.props.order.billing[0].invoice;
-    let deduct = 0 + data;
-    const difference = this.difference();
-    if (difference > 86400) deduct = shipping;
-    return deduct;
+    if (!isDigitalProduct) {
+      Meteor.call("deleteOrder", _id);
+    }
+    this.refundPayment(digitalItems);
   }
 
   notify = (messageType) => {
-    const userId = Meteor.user()._id;
+    let userId;
+    if (messageType === "orderIsCanceled") userId = this.getAdminUserId();
+    userId = Meteor.user()._id;
     const type = messageType;
     const url = "/account/wallet";
     const sms = false;
     Meteor.call("notification/send", userId, type, url, sms);
   }
 
-  updateTransactionDetails = (wallet) => {
-    const { subtotal } = this.props.order.billing[0].invoice;
+  updateTransactionDetails = (wallet, amount) => {
     const userId = Meteor.user()._id;
-    const refund = Number(subtotal);
-    Meteor.call("transaction/create", userId, refund, wallet, "Refund", () => {
+    Meteor.call("transaction/create", userId, amount, wallet, "Refund", () => {
       this.notify("refund");
     });
   }
@@ -114,7 +120,7 @@ class CancelOrderComponent extends Component {
       Meteor.call("wallet/updateAmount", payload._id, amount, (error, res) => {
         if (res) {
           this.notify("orderCanceled");
-          this.updateTransactionDetails(payload.walletId);
+          this.updateTransactionDetails(payload.walletId, amountPaid - deductedAmount);
           Alerts.toast("The order is cancelled and your wallet have been refunded", "success");
         } else {
           Alerts.toast("Something went wrong", "error");
@@ -123,13 +129,25 @@ class CancelOrderComponent extends Component {
     });
   }
   render() {
+    const { items } = this.props.order;
+    let digitalProduct;
+    if (items.length === 1) {
+      const { isDigital } = items[0].product;
+      digitalProduct = isDigital;
+    }
+    const passedTime = this.difference() > 172800;
+    const showCancelButton = passedTime || digitalProduct;
     return (
-      <input
-        type="button"
-        value="Cancel Order"
-        className="btn btn-danger"
-        onClick={this.confirmAction}
-      />
+      <div>
+        { showCancelButton ? "" :
+          <input
+            type="button"
+            value="Cancel Order"
+            className="btn btn-danger mt-2"
+            onClick={this.confirmAction}
+          />
+        }
+      </div>
     );
   }
 }
