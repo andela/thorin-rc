@@ -10,7 +10,7 @@ class CancelOrderComponent extends Component {
   }
 
   deduction = (digitalProductCost) => {
-    const { shipping } = this.props.order.billing[0].invoice;
+    const { shipping } = this.props.order.billing[0].invoice; //eslint-disable-line
     let deduct;
     if (digitalProductCost) {
       deduct = 0 + digitalProductCost;
@@ -25,9 +25,9 @@ class CancelOrderComponent extends Component {
   confirmAction = () => {
     let digitalItems = 0;
     let itemLength = 0;
-    const { shipping } = this.props.order.billing[0].invoice;
-    const { items } = this.props.order;
-    this.props.order.items.map((product) => {
+    const { shipping } = this.props.order.billing[0].invoice; //eslint-disable-line
+    const { items } = this.props.order; //eslint-disable-line
+    this.props.order.items.map((product) => { //eslint-disable-line
       const {
         product: { isDigital }, variants: { price }, quantity
       } = product;
@@ -78,7 +78,7 @@ class CancelOrderComponent extends Component {
   cancelOrder = () => {
     let digitalItems = 0;
     let isDigitalProduct = false;
-    const { _id, items } = this.props.order;
+    const { _id, items } = this.props.order; //eslint-disable-line
     items.map((product) => {
       const {
         product: { isDigital }, variants: { price }, quantity
@@ -117,7 +117,7 @@ class CancelOrderComponent extends Component {
 
   refundPayment = (nonRefund) => {
     Meteor.call("wallet/get", Meteor.user()._id, (err, payload) => {
-      const { subtotal } = this.props.order.billing[0].invoice;
+      const { subtotal } = this.props.order.billing[0].invoice; //eslint-disable-line
       const deductedAmount = this.deduction(nonRefund);
       const amountPaid = Number(subtotal);
       const amount  = amountPaid - deductedAmount + payload.balance;
@@ -133,7 +133,7 @@ class CancelOrderComponent extends Component {
     });
   }
   render() {
-    const { items } = this.props.order;
+    const { items } = this.props.order; //eslint-disable-line
     let digitalProduct;
     if (items.length === 1) {
       const { isDigital } = items[0].product;

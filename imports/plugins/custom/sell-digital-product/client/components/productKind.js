@@ -152,8 +152,7 @@ class ProductKind extends Component {
           }
         });
       })
-      .catch(err => {
-        //eslint-disable-line
+      .catch(err => { //eslint-disable-line
         Logger.error("Upload failed");
         this.setState({
           ...this.state,
