@@ -6,6 +6,7 @@ import { Meteor } from "meteor/meteor";
 import "../stylesheet/style.css";
 import { registerComponent, composeWithTracker  } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
+import { ReactionProduct } from "/lib/api";
 import { Reviews } from "../../lib/collections";
 
 class ProductReview extends Component {
@@ -18,6 +19,13 @@ class ProductReview extends Component {
 
     componentDidMount() {
       this.avarageRating();
+      const productId =  ReactionProduct.selectedProductId();
+      Meteor.call("reviews/isPurchased", productId, (err, result) => {
+        this.setState({
+          ...this.state,
+          isPurchased: result
+        });
+      });
     }
 
     avarageRating = () => {
@@ -51,6 +59,7 @@ class ProductReview extends Component {
        const rating  = parseInt(this.state.rating, 10);
        const userEmail = this.state.user.emails[0].address;
        const productName = Reaction.Router.getParam("handle");
+
        Meteor.call("review/create", rating, review, userEmail, productName);
        Meteor.call("reviews/average", productName);
        this.setState({ rating: 0, review: ""  });
@@ -92,6 +101,12 @@ class ProductReview extends Component {
      const signin = (
        <div>
          <h3>Sign in or Register to Leave a Rating and a Review </h3>
+         <br/>
+       </div>
+     );
+     const noPurchase = (
+       <div>
+         <h3>Please make a purchase before you can review and rate this product</h3>
          <br/>
        </div>
      );
@@ -152,6 +167,8 @@ class ProductReview extends Component {
          return signin;
        } else if (admin === "owner") {
          return adminMessage;
+       } else if (!this.state.isPurchased) {
+         return noPurchase;
        }
        return addReview;
      };
