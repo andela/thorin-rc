@@ -3,6 +3,7 @@ import _ from "lodash";
 import { Factory } from "meteor/dburles:factory";
 import { Products, Tags } from "/lib/collections";
 import { getShop } from "./shops";
+import { atRule } from "postcss";
 
 
 /**
@@ -53,6 +54,8 @@ export function productVariant(options = {}) {
     inventoryPolicy: faker.random.boolean(),
     lowInventoryWarningThreshold: _.random(1, 5),
     inventoryQuantity: _.random(0, 100),
+    createdAt: new Date(),
+    updatedAt: new Date(),
     price: _.random(10, 1000),
     title: faker.commerce.productName(),
     optionTitle: faker.commerce.productName(),
