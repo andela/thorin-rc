@@ -47,8 +47,22 @@ function composer(props, onData) {
     * Product Search
     */
     if (props.searchCollection === "products") {
-      productResults = Collections.ProductSearch.find().fetch();
-
+      if (props.isVendor) {
+        productResults = Collections.ProductSearch.find({
+          $and: [
+            { "price.min": { $gte: props.minPrice } },
+            { "price.max": { $lte: props.maxPrice } },
+            { vendor: props.vendor }
+          ]
+        }, { sort: props.sortBy }).fetch();
+      } else {
+        productResults = Collections.ProductSearch.find({
+          $and: [
+            { "price.min": { $gte: props.minPrice } },
+            { "price.max": { $lte: props.maxPrice } }
+          ]
+        }, { sort: props.sortBy }).fetch();
+      }
       const productHashtags = getProductHashtags(productResults);
       tagSearchResults = Collections.Tags.find({
         _id: { $in: productHashtags }

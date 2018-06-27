@@ -643,4 +643,13 @@ describe("orders test", function () {
       expect(billingObjectMethod(updateOrder).paymentMethod.status).to.equal("refunded");
     });
   });
+
+  describe("cancel order", function () {
+    it("delete an order", () => {
+      Meteor.call("deleteOrder",
+        order._id, (err, payload) => {
+          expect(payload).to.equal(1);
+        });
+    });
+  });
 });
