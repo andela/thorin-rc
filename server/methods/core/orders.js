@@ -153,6 +153,28 @@ export function orderQuantityAdjust(orderId, refundedItem) {
 }
 
 export const methods = {
+
+  deleteOrder(_id) {
+    check(_id, String);
+    const cancelOrder = Orders.remove(_id);
+    return cancelOrder;
+  },
+
+  deleteOrderItem(_id, productId) {
+    check(_id, String);
+    check(productId, String);
+    Orders.update({
+      _id: _id
+    }, {
+      $pull: {
+        items: {
+          _id: productId
+        }
+      }
+    },
+    { getAutoValues: false }
+    );
+  },
   /**
    * @name orders/shipmentPicked
    * @method
