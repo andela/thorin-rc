@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="3">
+
+  <testsuite name="sort-filter.test"
+    errors="0" failures="0" hostname="" id="" package="sort-filter.test" skipped="0"
+    tests="3" time="19.05" timestamp="Mon, 25 Jun 2018 17:00:58 GMT">
+  
+    <testcase name="User should be able to sort and filter search" classname="sort-filter.test" time="14.56" assertions="9">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="User should be able to search by vendor" classname="sort-filter.test" time="2.213" assertions="2">
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="User should be able to perform sorting on product" classname="sort-filter.test" time="2.278" assertions="2">
+
+    
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

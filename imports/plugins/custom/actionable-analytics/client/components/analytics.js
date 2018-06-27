@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import { Template } from "meteor/templating";
+import { formatPriceString } from "/client/api";
 import { SideBarAnalytics } from "../containers/SidebarAnalytics";
 import { InventoryAnalytics } from "../containers/InventoryAnalytics";
 import { OverviewAnalytics } from "../containers/OverviewAnalytics";
@@ -35,12 +36,21 @@ class Analytics extends Component {
     componentDidMount() {
       this.AnalyticsDetails(this.state.fromDate, this.state.toDate);
       this.getProductInventory();
+      this.getCanceledOrders();
     }
 
     componentDidUpdate() {
       if (this.state.dateChange) {
         this.AnalyticsDetails(this.state.fromDate, this.state.toDate);
       }
+    }
+
+    getCanceledOrders =() => {
+      Meteor.call("getCanceledOrders", (err, payload) => {
+        if (!err) {
+          this.setState({ cancelOrder: payload.length });
+        }
+      });
     }
 
     getProductInventory = () => {
@@ -71,7 +81,6 @@ class Analytics extends Component {
             totalShippingCost: analytics.totalShippingCost,
             analyticsResult: analytics.analytics,
             ordersAnalytics: analytics.ordersAnalytics,
-            cancelOrder: analytics.ordersCancelled,
             grossProfit: (analytics.totalSales - analytics.totalCostPrice)
           });
           this.setState({
@@ -80,6 +89,7 @@ class Analytics extends Component {
         }
       });
     }
+
 
     fromInputChange = (e) => {
       if (!_.isEmpty(e.target.value)) {
@@ -98,7 +108,6 @@ class Analytics extends Component {
         });
       }
     }
-
 
     overview = () => {
       this.setState({
@@ -150,7 +159,7 @@ class Analytics extends Component {
 
           <OverviewAnalytics
             currentTab={this.state.currentTab}
-            totalRevenue={this.state.totalRevenue}
+            totalRevenue={formatPriceString(this.state.totalRevenue)}
             cancelOrder={this.state.cancelOrder}
             totalPurchase={this.state.totalPurchase}
             totalOrder={this.state.totalOrder}
@@ -170,9 +179,9 @@ class Analytics extends Component {
             inventorySearch={this.state.inventorySearch}
           />
 
-          <DailySalesResult 
+          <DailySalesResult
             currentTab={this.state.currentTab}
-            totalDaySales={this.state.totalDaySales}
+            totalDaySales={formatPriceString(this.state.totalDaySales)}
 
           />
         </div>

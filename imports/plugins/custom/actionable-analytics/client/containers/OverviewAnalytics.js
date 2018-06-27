@@ -10,7 +10,7 @@ export const OverviewAnalytics = (props) => {
           <div className="col-sm-3 col-md-12">
             <div className="but">
               <div className="caption">
-                <h1>Total Revenue: {props.totalRevenue}</h1>
+                <h3>Total Revenue: {props.totalRevenue}</h3>
               </div>
             </div>
           </div>
@@ -20,7 +20,7 @@ export const OverviewAnalytics = (props) => {
           <div className="col-sm-3 col-md-12">
             <div className="but">
               <div className="caption">
-                <h1>Total Cancel: {props.cancelOrder}</h1>
+                <h3>Total Cancel: {props.cancelOrder}</h3>
               </div>
             </div>
           </div>
@@ -30,7 +30,7 @@ export const OverviewAnalytics = (props) => {
           <div className="col-sm-3 col-md-12">
             <div className="but">
               <div className="caption">
-                <h1>Total Purchase: {props.totalPurchase}</h1>
+                <h3>Total Purchase: {props.totalPurchase}</h3>
               </div>
             </div>
           </div>
@@ -40,7 +40,7 @@ export const OverviewAnalytics = (props) => {
           <div className="col-sm-3 col-md-12">
             <div className="but">
               <div className="caption">
-                <h1>Total Order: {props.totalOrder}</h1>
+                <h3>Total Order: {props.totalOrder}</h3>
               </div>
             </div>
           </div>

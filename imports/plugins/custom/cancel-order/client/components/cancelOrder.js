@@ -89,11 +89,14 @@ class CancelOrderComponent extends Component {
         return digitalItems;
       }
       Meteor.call("deleteOrderItem", _id, product._id, (err) => {
-        if (err) Alerts.alert("Something went wrong");
+        if (err) return Alerts.alert("Something went wrong");
+        Meteor.call("insertCanceledOrder", product);
       });
     });
     if (!isDigitalProduct) {
-      Meteor.call("deleteOrder", _id);
+      Meteor.call("deleteOrder", _id, (err) => {
+        if (err) return Alerts.alert("Something went wrong");
+      });
     }
     this.refundPayment(digitalItems);
   }
