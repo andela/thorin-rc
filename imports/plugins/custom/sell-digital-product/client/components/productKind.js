@@ -17,9 +17,28 @@ class ProductKind extends Component {
     };
   }
 
+  componentDidMount() {
+    Meteor.call("findDigitalProduct",
+      ReactionProduct.selectedProductId(),
+      function (err, result) {
+        if (result !== "" && result.isDigital === true && Reaction.hasAdminAccess()) {
+          document.querySelector("#productKind").value = "digital";
+          this.handleChange();
+        }
+      }.bind(this));
+  }
+
   componentDidUpdate() {
-    if (this.refs.fileUrl && localStorage.getItem(window.location.pathname) !== null) {
-      this.refs.fileUrl.value = localStorage.getItem(window.location.pathname);
+    try {
+      Meteor.call("findDigitalProduct",
+        ReactionProduct.selectedProductId(),
+        function (err, result) {
+          if (result === "") {
+            this.refs.fileUrl.value = "";
+          }
+        }.bind(this));
+    } catch (e) {
+      Logger.info("Error in Receiving Response");
     }
   }
 
@@ -64,6 +83,13 @@ class ProductKind extends Component {
           Logger.error("Inserting or updating digital product failed.");
         }
       });
+    Meteor.call("findDigitalProduct", modifier.productId, function (err, result) {
+      setTimeout(function () {
+        if (result !== "") {
+          this.refs.fileUrl.value = result.fileUrl;
+        }
+      }.bind(this), 200);
+    }.bind(this));
   }
 
   handleUpload = (evt) => {
@@ -135,7 +161,7 @@ class ProductKind extends Component {
     }
     return (
       <div>
-        <select style={{ width: "50%", padding: "0px !important",
+        <select id="productKind" style={{ width: "50%", padding: "0px !important",
           marginBottom: "10px", height: "35px",
           position: "relative", left: "-3px" }} ref="productKind"
           onChange={this.handleChange} //eslint-disable-line

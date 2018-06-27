@@ -157,6 +157,15 @@ class SearchModal extends Component {
     );
   }
 
+  renderWhenNoProduct() {
+    return (
+      <div className="when-no-product">
+        <div className="center-no-product">
+          <h3>Sorry! No available product</h3>
+        </div>
+      </div>
+    );
+  }
   render() {
     return (
       <div>
@@ -170,6 +179,7 @@ class SearchModal extends Component {
         </div>
         {this.renderSortFilter()}
         <div className="rui search-modal-results-container">
+          {this.props.products.length === 0 && this.renderWhenNoProduct()}
           {this.props.products.length > 0 && <ProductGridContainer products={this.props.products} unmountMe={this.props.unmountMe} isSearch={true} />}
           {this.props.accounts.length > 0 && (
             <div className="data-table">
