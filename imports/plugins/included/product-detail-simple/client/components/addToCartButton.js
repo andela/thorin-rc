@@ -9,7 +9,11 @@ class AddToCartButton extends Component {
 
   handleCartQuantityChange = (event) => {
     if (this.props.onCartQuantityChange) {
-      this.props.onCartQuantityChange(event, event.target.value);
+      if (window.productKind === "digital") {
+        this.props.onCartQuantityChange(event, "1");
+      } else  {
+        this.props.onCartQuantityChange(event, event.target.value);
+      }
     }
   }
 
