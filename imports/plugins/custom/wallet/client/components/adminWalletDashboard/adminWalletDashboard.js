@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import { Template } from "meteor/templating";
 import "./adminWalletDashboard.html";

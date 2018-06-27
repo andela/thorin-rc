@@ -110,9 +110,10 @@ const wrapComponent = (Comp) => (
 
       this.setState({
         value,
-        minPrice: 0,
-        maxPrice: 10000000,
-        vendor: ""
+        minPrice: this.state.minPrice,
+        maxPrice: this.state.maxPrice,
+        vendor: this.state.vendor,
+        sortBy: this.state.sortBy
       });
     }
 
