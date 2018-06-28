@@ -58,28 +58,6 @@ describe("core shop methods", function () {
       expect(insertShopSpy).to.not.have.been.called;
       return done();
     });
-
-    it("should create new shop for admin for userId and shopObject", function () {
-      this.timeout(5000);
-      sandbox.stub(Meteor, "user", () => {
-        return {
-          userId: "12345678",
-          emails: [{
-            address: "user@example.com",
-            provides: "default",
-            verified: true
-          }]
-        };
-      });
-      const shopId = Random.id();
-      Factory.create("account", { _id: "12345678", shopId: shopId });
-
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      sandbox.stub(Reaction, "getPrimaryShopId", () => shopId);
-      Meteor.call("shop/createShop", "12345678", shop);
-      const newShopCount = Shops.find({ name: shop.name }).count();
-      expect(newShopCount).to.equal(1);
-    });
   });
 });
 

@@ -96,9 +96,6 @@ class CancelOrderComponent extends Component {
     if (!isDigitalProduct) {
       Meteor.call("deleteOrder", _id, (err) => {
         if (err) return Alerts.alert("Something went wrong");
-        items.map((product) => {
-          Meteor.call("insertCanceledOrder", product);
-        });
       });
     }
     this.refundPayment(digitalItems);

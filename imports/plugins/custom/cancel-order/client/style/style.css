@@ -12,7 +12,7 @@
   padding: 30px;
   margin: 20px;
 }
-td {
+.deduction-table td {
   padding: 10px;
   font-size: 14px;
   font-weight: bold;

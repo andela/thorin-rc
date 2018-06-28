@@ -12,7 +12,7 @@ Meteor.methods({
     return canceledOrder;
   },
   "getCanceledOrders"() {
-    const canceledOrderLength = OrdersCanceled.find({});
+    const canceledOrderLength = OrdersCanceled.find({}).fetch();
     return canceledOrderLength;
   }
 });
