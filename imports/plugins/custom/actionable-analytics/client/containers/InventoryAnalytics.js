@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React from "react";
 import { formatPriceString } from "/client/api";
 import { registerComponent } from "@reactioncommerce/reaction-components";

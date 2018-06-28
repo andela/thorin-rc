@@ -1,3 +1,4 @@
+/*eslint-disable */
 import faker from "faker";
 import _ from "lodash";
 import { Factory } from "meteor/dburles:factory";

@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React from "react";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 export const OverviewAnalytics = (props) => {

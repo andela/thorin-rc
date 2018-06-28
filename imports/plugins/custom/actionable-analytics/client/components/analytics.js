@@ -1,3 +1,4 @@
+/*eslint-disable */
 import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import { Template } from "meteor/templating";

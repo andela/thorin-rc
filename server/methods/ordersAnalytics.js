@@ -1,3 +1,4 @@
+/*eslint-disable */
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import * as Collections from "/lib/collections";

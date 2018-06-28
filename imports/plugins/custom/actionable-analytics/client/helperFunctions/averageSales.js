@@ -1,3 +1,4 @@
+/*eslint-disable */
 import { getDate } from "./getDate";
 
 export const averageSales = (totalSales, fromDate, toDate) => {

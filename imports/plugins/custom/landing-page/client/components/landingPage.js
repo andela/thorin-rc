@@ -3,7 +3,6 @@ import { registerComponent, getHOCs, getRawComponent } from "/imports/plugins/co
 import Carousel from "./carousel";
 import FeaturedProducts from "./products";
 import FlashDeals from "./flashDeals";
-import Footer from "./footer";
 import "../styles/landing.less";
 class LandingPage extends getRawComponent("Products") {
   render() {
@@ -15,9 +14,6 @@ class LandingPage extends getRawComponent("Products") {
           <hr className="divider"/>
           <FeaturedProducts />
         </main>
-        <footer>
-          <Footer />
-        </footer>
       </div>
 
     );
