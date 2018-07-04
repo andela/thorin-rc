@@ -39,7 +39,9 @@ Meteor.methods({
       orderShipped: "Your order has been shipped",
       fund: "Your wallet was just funded",
       transfer: "Your transfer was successful",
-      payment: "Payment was successful"
+      payment: "Payment was successful",
+      refund: "Your wallet have been refunded",
+      orderIsCanceled: "An order was canceled"
     };
 
     if (userId && type && url) {

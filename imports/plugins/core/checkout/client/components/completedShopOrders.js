@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Components } from "@reactioncommerce/reaction-components";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import CompletedOrderItem from "./completedOrderItem";
 
@@ -12,7 +13,7 @@ import CompletedOrderItem from "./completedOrderItem";
  * @property {boolean} isProfilePage - Checks if current page is profile page
  * @return {Node} React node containing the break down of the order by Shop
  */
-const CompletedShopOrders = ({ shopName, items, handleDisplayMedia, shippingMethod, isProfilePage }) => {
+const CompletedShopOrders = ({ shopName, items, handleDisplayMedia, shippingMethod, isProfilePage, order }) => {
   const shippingName = isProfilePage ? (
     <span>
       <strong>
@@ -33,6 +34,9 @@ const CompletedShopOrders = ({ shopName, items, handleDisplayMedia, shippingMeth
         {items.map(function (item) {
           return <CompletedOrderItem item={item} key={item._id} handleDisplayMedia={handleDisplayMedia} />;
         })}
+        <Components.CancelOrderComponent
+          order={order}
+        />
       </div>
 
       {/* This is the left side / main content */}
